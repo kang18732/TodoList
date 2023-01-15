@@ -10,4 +10,5 @@ public interface TaskRepository {
     Optional<Task> findById(Long id);
 //    Optional<Task> findByText(String text);
     List<Task> findAll();
+    void deleteById(Long id);
 }

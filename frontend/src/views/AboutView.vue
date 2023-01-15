@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { postTask, getTaskList } from "@/api/todoApi";
+import { postTask, getTaskList, deleteTask } from "@/api/todoApi";
 import { ref, onMounted } from "vue";
 
 interface Task {
@@ -51,7 +51,7 @@ const tasks = ref<Task[]>([]);
 const newTask = ref("");
 
 onMounted(async () => {
-  tasks.value = await getTaskList();
+  refreshTaskList();
 });
 
 const addTask = async () => {
@@ -71,9 +71,15 @@ const markDone = (task: Task) => {
   task.done = !task.done;
 };
 
-const removeTask = (task: Task) => {
-  const index = tasks.value.indexOf(task);
-  tasks.value.splice(index, 1);
+const removeTask = async (task: Task) => {
+  // const index = tasks.value.indexOf(task);
+  // tasks.value.splice(index, 1);
+  await deleteTask(task.id);
+  refreshTaskList();
+};
+
+const refreshTaskList = async () => {
+  tasks.value = await getTaskList();
 };
 </script>
 

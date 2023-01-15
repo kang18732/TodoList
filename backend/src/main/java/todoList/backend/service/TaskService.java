@@ -17,15 +17,11 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Task saveTask(Task task) {
-        return taskRepository.save(task);
-    }
-//    public Long saveTask(Task task) {
-//        taskRepository.save(task);
-//        return task.getId();
-//    }
+    public Task saveTask(Task task) { return taskRepository.save(task); }
 
     public List<Task> findTasks() {
         return taskRepository.findAll();
     }
+
+    public void removeTask(Long id) { taskRepository.deleteById(id); }
 }
