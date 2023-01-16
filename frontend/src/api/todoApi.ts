@@ -1,11 +1,6 @@
 import axios from "axios";
 
-interface Task {
-  text: string;
-  done: boolean;
-}
-
-export const postTask = async (task: Task) => {
+export const postTask = async (task: object) => {
   try {
     const response = await axios.post("http://localhost:8080/post/task", task, {
       headers: {
@@ -37,5 +32,18 @@ export const deleteTask = async (id: number) => {
     console.log(response.data);
   } catch (error) {
     console.error(`axios deleteTask error: ${error}`);
+  }
+};
+
+export const updateTask = async (task: object) => {
+  try {
+    const response = await axios.put("http://localhost:8080/put/task", task, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(response.data);
+  } catch (error) {
+    console.error(`axios changeTaskStatus error: ${error}`);
   }
 };

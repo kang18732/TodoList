@@ -32,4 +32,9 @@ public class TaskController {
         taskService.removeTask(id);
         return "task " + id + " deleted";
     }
+
+    @PutMapping(value = "/put/task")
+    public Task updateTask(@RequestBody Task task) {
+        return taskService.saveTask(task);
+    }
 }
