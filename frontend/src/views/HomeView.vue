@@ -1,9 +1,35 @@
-<script setup lang="ts">
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <div class="w-1/2 h-1/2 ml-52 mt-48">
+    <h1
+      class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-8xl dark:text-white"
+    >
+      Your Todo List
+    </h1>
+
+    <div class="my-32">
+      <div class="relative">
+        <form @submit.prevent="enterName">
+          <input
+            v-model="name"
+            type="text"
+            id="floating_outlined"
+            class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+          />
+          <label
+            for="floating_outlined"
+            class="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+            >Enter name.</label
+          >
+        </form>
+      </div>
+    </div>
+  </div>
 </template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+
+const name = ref("");
+const enterName = () => {};
+</script>
