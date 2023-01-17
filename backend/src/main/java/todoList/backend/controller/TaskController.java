@@ -27,6 +27,11 @@ public class TaskController {
         return taskService.findTasks();
     }
 
+    @GetMapping(value = "/get/task-list/{text}")
+    public List<Task> getTaskListByText(@PathVariable String text) {
+        return taskService.findTasksByText(text);
+    }
+
     @DeleteMapping(value = "/delete/task/{id}")
     public String deleteTask(@PathVariable Long id) {
         taskService.removeTask(id);

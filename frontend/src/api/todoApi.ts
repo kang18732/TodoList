@@ -24,6 +24,18 @@ export const getTaskList = async () => {
   }
 };
 
+export const getTaskListByText = async (text: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/get/task-list/${text}`
+    );
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(`axios getTaskListByText error: ${error}`);
+  }
+};
+
 export const deleteTask = async (id: number) => {
   try {
     const response = await axios.delete(

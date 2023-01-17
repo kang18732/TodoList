@@ -4,9 +4,11 @@
       My Todo List
     </h2>
     <TodoList class="mt-12" />
+    <TodoSearch />
   </div>
 </template>
 
 <script setup lang="ts">
 import TodoList from "@/components/TodoList.vue";
+import TodoSearch from "@/components/TodoSearch.vue";
 </script>

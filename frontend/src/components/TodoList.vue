@@ -1,5 +1,7 @@
 <template>
-  <div class="bg-white p-4 rounded-lg border-2 border-black dark:border-white">
+  <div
+    class="max-h-96 overflow-scroll bg-white p-4 rounded-lg border-2 border-black dark:border-white"
+  >
     <form @submit.prevent="addTask" class="mb-4">
       <label for="new-task" class="block text-gray-700 font-medium mb-2"
         >Add Task</label
@@ -18,7 +20,7 @@
         :key="task.id"
         class="border-b border-gray-400 py-2"
       >
-        <div class="flex items-center">
+        <div class="flex">
           <input
             :checked="task.done"
             @change="markDone(task)"
@@ -28,8 +30,13 @@
           <p :class="{ 'line-through': task.done }" class="text-gray-700">
             {{ task.text }}
           </p>
+          <button
+            @click="removeTask(task)"
+            class="absolute right-0 text-red-500"
+          >
+            Remove
+          </button>
         </div>
-        <button @click="removeTask(task)" class="text-red-500">Remove</button>
       </li>
     </ul>
   </div>
