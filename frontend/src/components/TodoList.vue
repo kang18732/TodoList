@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { postTask, getTaskList, deleteTask, updateTask } from "@/api/todoApi";
+import { postTask, getTaskList, deleteTask } from "@/api/todoApi";
 import { ref, onMounted } from "vue";
 
 interface Task {
@@ -74,13 +74,18 @@ const addTask = async () => {
 
 const markDone = (task: Task) => {
   task.done = !task.done;
-  updateTask(task);
+  postTask(task);
 };
 
 const removeTask = async (task: Task) => {
   // const index = tasks.value.indexOf(task);
   // tasks.value.splice(index, 1);
-  await deleteTask(task.id);
+  const removed = await deleteTask(task.id);
+  if (removed) {
+    console.log(`Task ${task.id} removed.`);
+  } else {
+    console.log("Task does not exist.");
+  }
   refreshTaskList();
 };
 

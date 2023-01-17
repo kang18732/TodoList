@@ -1,5 +1,7 @@
 package todoList.backend.controller;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import todoList.backend.domain.Task;
@@ -33,13 +35,7 @@ public class TaskController {
     }
 
     @DeleteMapping(value = "/delete/task/{id}")
-    public String deleteTask(@PathVariable Long id) {
-        taskService.removeTask(id);
-        return "task " + id + " deleted";
-    }
-
-    @PutMapping(value = "/put/task")
-    public Task updateTask(@RequestBody Task task) {
-        return taskService.saveTask(task);
+    public Boolean deleteTask(@PathVariable Long id) {
+        return taskService.removeTask(id);
     }
 }

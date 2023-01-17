@@ -28,5 +28,11 @@ public class TaskService {
         return taskRepository.findAllByText(text);
     }
 
-    public void removeTask(Long id) { taskRepository.deleteById(id); }
+    public Boolean removeTask(Long id) {
+        if(taskRepository.findById(id).isPresent()) {
+            taskRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
