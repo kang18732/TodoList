@@ -2,11 +2,10 @@ package todoList.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import todoList.backend.domain.Task;
+import todoList.backend.data.entity.Task;
 import todoList.backend.repository.TaskRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TaskService {

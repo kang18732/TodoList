@@ -1,10 +1,8 @@
 package todoList.backend.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import todoList.backend.domain.Task;
+import todoList.backend.data.entity.Task;
 import todoList.backend.service.TaskService;
 
 import java.util.List;

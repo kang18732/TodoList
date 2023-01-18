@@ -1,4 +1,4 @@
-package todoList.backend.domain;
+package todoList.backend.data.entity;
 
 import lombok.Getter;
 import lombok.Setter;

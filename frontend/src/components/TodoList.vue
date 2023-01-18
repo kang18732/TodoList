@@ -78,15 +78,16 @@ const markDone = (task: Task) => {
 };
 
 const removeTask = async (task: Task) => {
-  // const index = tasks.value.indexOf(task);
-  // tasks.value.splice(index, 1);
+  const index = tasks.value.indexOf(task);
+  tasks.value.splice(index, 1);
+
   const removed = await deleteTask(task.id);
   if (removed) {
     console.log(`Task ${task.id} removed.`);
   } else {
     console.log("Task does not exist.");
   }
-  refreshTaskList();
+  // refreshTaskList();
 };
 
 const refreshTaskList = async () => {
