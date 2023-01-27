@@ -1,4 +1,4 @@
-package todoList.backend.config.security;
+package todoList.backend.common.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -24,21 +24,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable()
-
                 .csrf().disable()
-
                 .sessionManagement()
                 .sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS
                 )
+
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/sign-in", "/user/sign-up", "/user/exception",
-                        "/todo/**").permitAll()
+                .antMatchers("/user/sign-in", "/user/sign-up").permitAll()
+                .antMatchers("/todo/**").authenticated()
 
-                .antMatchers("**exception").permitAll()
-
-                .anyRequest().hasRole("ADMIN")
+//                .antMatchers("**exception").permitAll()
+//                .anyRequest().hasRole("ADMIN")
 
                 .and()
                 .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
@@ -53,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity webSecurity) {
         webSecurity.ignoring().antMatchers("/v2/api-docs", "/swagger-resources/**",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**", "/sign-api/exception");
+                "/swagger-ui.html", "/webjars/**", "/swagger/**");
     }
 
     @Bean

@@ -1,4 +1,4 @@
-package todoList.backend.config.security;
+package todoList.backend.common.config.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -1,4 +1,4 @@
-package todoList.backend.config;
+package todoList.backend.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

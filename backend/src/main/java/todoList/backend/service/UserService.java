@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import todoList.backend.common.CommonResponse;
-import todoList.backend.config.security.JwtTokenProvider;
+import todoList.backend.common.config.security.JwtTokenProvider;
 import todoList.backend.data.dto.SignInResultDto;
 import todoList.backend.data.dto.SignUpResultDto;
 import todoList.backend.data.entity.User;

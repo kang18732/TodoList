@@ -1,4 +1,4 @@
-package todoList.backend.config.security;
+package todoList.backend.common.config.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
