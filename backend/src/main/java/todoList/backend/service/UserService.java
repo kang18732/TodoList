@@ -13,26 +13,27 @@ import todoList.backend.repository.UserRepository;
 import java.util.Collections;
 
 @Service
-public class SignService {
+public class UserService {
 
     public UserRepository userRepository;
     public JwtTokenProvider jwtTokenProvider;
     public PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SignService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
-                           PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider,
+                       PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public SignUpResultDto signUp(String id, String password, String name, String role) {
+    public SignUpResultDto signUp(String id, String password, String name, String email, String role) {
         User user;
         if(role.equalsIgnoreCase("admin")) {
             user = User.builder()
                     .uid(id)
                     .name(name)
+                    .email(email)
                     .password(passwordEncoder.encode(password))
                     .roles(Collections.singletonList("ROLE_ADMIN"))
                     .build();
@@ -40,13 +41,20 @@ public class SignService {
             user = User.builder()
                     .uid(id)
                     .name(name)
+                    .email(email)
                     .password(passwordEncoder.encode(password))
                     .roles(Collections.singletonList("ROLE_USER"))
                     .build();
         }
 
-        User savedUser = userRepository.save(user);
         SignUpResultDto signUpResultDto = new SignInResultDto();
+
+        if(userRepository.findByUid(user.getUid()).isPresent()) {
+            setFailResult(signUpResultDto);
+            return signUpResultDto;
+        }
+
+        User savedUser = userRepository.save(user);
 
         if(!savedUser.getName().isEmpty()) {
             setSuccessResult(signUpResultDto);
@@ -57,11 +65,12 @@ public class SignService {
         return signUpResultDto;
     }
 
-    public SignInResultDto signIn(String id, String password) throws RuntimeException {
+    public SignInResultDto signIn(String id, String password) {
         User user = userRepository.getByUid(id);
-
-        if(!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException();
+        if(user == null || !passwordEncoder.matches(password, user.getPassword())) {
+            SignInResultDto signInResultDto = new SignInResultDto();
+            setFailResult(signInResultDto);
+            return signInResultDto;
         }
 
         SignInResultDto signInResultDto = SignInResultDto.builder()

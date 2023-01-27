@@ -33,7 +33,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 )
                 .and()
                 .authorizeRequests()
-                .antMatchers("/sign-api/sign-in", "/sign-api/sign-up", "/sign-api/exception").permitAll()
+                .antMatchers("/user/sign-in", "/user/sign-up", "/user/exception",
+                        "/todo/**").permitAll()
 
                 .antMatchers("**exception").permitAll()
 

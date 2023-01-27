@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const postTask = async (task: object) => {
   try {
-    const response = await axios.post("http://localhost:8080/post/task", task, {
+    const response = await axios.post("http://localhost:8080/todo/task", task, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -16,7 +16,7 @@ export const postTask = async (task: object) => {
 
 export const getTaskList = async () => {
   try {
-    const response = await axios.get("http://localhost:8080/get/task-list");
+    const response = await axios.get("http://localhost:8080/todo/task-list");
     console.log(response.data);
     return response.data;
   } catch (error) {
@@ -27,7 +27,7 @@ export const getTaskList = async () => {
 export const getTaskListByText = async (text: string) => {
   try {
     const response = await axios.get(
-      `http://localhost:8080/get/task-list/${text}`
+      `http://localhost:8080/todo/task-list/${text}`
     );
     console.log(response.data);
     return response.data;
@@ -39,7 +39,7 @@ export const getTaskListByText = async (text: string) => {
 export const deleteTask = async (id: number) => {
   try {
     const response = await axios.delete(
-      `http://localhost:8080/delete/task/${id}`
+      `http://localhost:8080/todo/task/${id}`
     );
     console.log(response.data);
     return response.data;
