@@ -14,7 +14,7 @@
           >ID</label
         >
         <input
-          v-model="userID"
+          v-model="username"
           type="text"
           id="user-id"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -68,7 +68,7 @@ import { signIn } from "@/api/userApi";
 import { useUserStore } from "@/store/userStore";
 
 const router = useRouter();
-const userID = ref("");
+const username = ref("");
 const password = ref("");
 
 const userStore = useUserStore();
@@ -83,13 +83,13 @@ const goToSignUp = () => {
 };
 
 const sendLoginInfo = async () => {
-  if (userID.value === "" || password.value === "") {
+  if (username.value === "" || password.value === "") {
     alert("모든 필드를 채우셔야 합니다.");
     return;
   }
 
   const loginInfo: LoginInfo = {
-    username: userID.value,
+    username: username.value,
     password: password.value,
   };
 
@@ -100,6 +100,7 @@ const sendLoginInfo = async () => {
   } else {
     userStore.setUserId(response.data.userId);
     userStore.setToken(response.data.token);
+    userStore.setUsername(loginInfo.username);
     router.push("/todo");
   }
 };
