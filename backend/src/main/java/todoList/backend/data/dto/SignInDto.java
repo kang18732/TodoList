@@ -1,10 +1,10 @@
 package todoList.backend.data.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class SignInDto {
 
-    private String userID;
+    private String username;
     private String password;
 }

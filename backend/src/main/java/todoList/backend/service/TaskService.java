@@ -2,14 +2,17 @@ package todoList.backend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import todoList.backend.common.exception.BadRequestException;
+import todoList.backend.data.dto.TaskDto;
 import todoList.backend.data.entity.Task;
 import todoList.backend.data.entity.User;
 import todoList.backend.repository.TaskRepository;
 import todoList.backend.repository.UserRepository;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -23,46 +26,51 @@ public class TaskService {
         this.userRepository = userRepository;
     }
 
-//    public ResponseEntity<ResponseDto<String>> createBook(Long userId, BookDto.BookInfoDto bookInfoDto) {
-//        User user;
-//        try {
-//            user = userRepository.findById(userId).get();
-//        }
-//        catch(NoSuchElementException e) {
-//            throw new BadRequestException("존재하지 않는 유저입니다.");
-//        }
-//        bookRepository.save(bookInfoDto.toBookEntity(user));
-//
-//        ResponseDto<String> responseDto = new ResponseDto<>("새로운 도서가 등록되었습니다.");
-//        return new ResponseEntity<>(responseDto, HttpStatus.OK);
-//    }
-
-    public Task saveTask(String uid, Task task) {
-        User user;
-        try {
-            user = userRepository.findByUid(uid).get();
-        } catch (NoSuchElementException e) {
+    public void createTask(Long userId, TaskDto taskDto) {
+        Optional<User> user = userRepository.findById(userId);
+        if (user.isEmpty()) {
             throw new BadRequestException("존재하지 않는 사용자입니다.");
         }
 
-        return taskRepository.save(task);
+        Task task = Task.builder()
+                .text(taskDto.getText())
+                .done(false)
+                .user(user.get())
+                .build();
+        taskRepository.save(task);
     }
 
-//    public Task saveTask(Task task) { return taskRepository.save(task); }
-
-    public List<Task> findTasks() {
-        return taskRepository.findAll();
+    public List<TaskDto> getAllTasks() {
+        List<Task> taskList = taskRepository.findAll();
+        List<TaskDto> taskDtoList = taskList.stream().map(TaskDto::new).collect(Collectors.toList());
+        return taskDtoList;
     }
 
-    public List<Task> findTasksByText(String text) {
-        return taskRepository.findAllByText(text);
+    @Transactional
+    public void deleteTask(Long userId, Long taskId) {
+        taskRepository.deleteByUserIdAndId(userId, taskId);
     }
 
-    public Boolean removeTask(Long id) {
-        if(taskRepository.findById(id).isPresent()) {
-            taskRepository.deleteById(id);
-            return true;
+    public void updateTask(Long userId, Long taskId, TaskDto taskDto) {
+        Optional<Task> task = taskRepository.findByUserIdAndId(userId, taskId);
+        if(task.isEmpty()) {
+            throw new BadRequestException("존재하지 않는 할일입니다.");
         }
-        return false;
+
+        task.get().setText(taskDto.getText());
+        task.get().setDone(taskDto.getDone());
+        taskRepository.save(task.get());
     }
+
+//    public List<Task> findTasksByText(String text) {
+//        return taskRepository.findAllByText(text);
+//    }
+//
+//    public Boolean removeTask(Long id) {
+//        if(taskRepository.findById(id).isPresent()) {
+//            taskRepository.deleteById(id);
+//            return true;
+//        }
+//        return false;
+//    }
 }

@@ -1,5 +1,6 @@
 package todoList.backend.common.config.security;
 
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(token != null && jwtTokenProvider.validateToken(token)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-//            servletRequest.setAttribute("id", Long.valueOf(jwtTokenProvider.getUsername(token)));
+            servletRequest.setAttribute("id", Long.valueOf(jwtTokenProvider.getUserId(token)));
         }
 
         filterChain.doFilter(servletRequest, servletResponse);

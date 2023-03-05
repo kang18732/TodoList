@@ -1,12 +1,11 @@
 package todoList.backend.data.dto;
 
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 public class SignUpDto {
 
-    private String name;
-    private String userID;
-    private String email;
+    private String username;
     private String password;
+    private String email;
 }

@@ -24,19 +24,21 @@
       </div>
 
       <div class="mb-12">
-        <label
-          for="password"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Password</label
-        >
-        <input
-          v-model="password"
-          type="password"
-          id="password"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="•••••••••"
-          required
-        />
+        <form @submit.prevent="sendLoginInfo">
+          <label
+            for="password"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Password</label
+          >
+          <input
+            v-model="password"
+            type="password"
+            id="password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="•••••••••"
+            required
+          />
+        </form>
       </div>
 
       <div class="flex justify-around">
@@ -63,13 +65,16 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { signIn } from "@/api/userApi";
+import { useUserStore } from "@/store/userStore";
 
 const router = useRouter();
 const userID = ref("");
 const password = ref("");
 
+const userStore = useUserStore();
+
 interface LoginInfo {
-  userID: string;
+  username: string;
   password: string;
 }
 
@@ -84,16 +89,18 @@ const sendLoginInfo = async () => {
   }
 
   const loginInfo: LoginInfo = {
-    userID: userID.value,
+    username: userID.value,
     password: password.value,
   };
 
-  const success = await signIn(loginInfo);
+  const response = await signIn(loginInfo);
 
-  if (success) {
-    router.push("/todo");
-  } else {
+  if (response === undefined) {
     alert("로그인에 실패하였습니다.");
+  } else {
+    userStore.setUserId(response.data.userId);
+    userStore.setToken(response.data.token);
+    router.push("/todo");
   }
 };
 </script>

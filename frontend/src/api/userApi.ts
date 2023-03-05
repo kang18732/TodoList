@@ -33,6 +33,5 @@ export const signIn = async (user: object) => {
     return response.data;
   } catch (error) {
     console.error(`axios signIn error: ${error}`);
-    alert("로그인에 실패하였습니다.");
   }
 };

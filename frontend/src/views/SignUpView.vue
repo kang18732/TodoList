@@ -6,7 +6,7 @@
       Your Todo List
     </h1>
     <form class="mt-12 w-10/12">
-      <div class="mb-6">
+      <!-- <div class="mb-6">
         <div>
           <label
             for="name"
@@ -22,7 +22,7 @@
             required
           />
         </div>
-      </div>
+      </div> -->
 
       <div class="mb-6">
         <div>
@@ -75,19 +75,21 @@
       </div>
 
       <div class="mb-10">
-        <label
-          for="confirm_password"
-          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >Confirm password</label
-        >
-        <input
-          v-model="secondPW"
-          type="password"
-          id="confirm_password"
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="•••••••••"
-          required
-        />
+        <form @submit.prevent="sendUserInfo">
+          <label
+            for="confirm_password"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Confirm password</label
+          >
+          <input
+            v-model="secondPW"
+            type="password"
+            id="confirm_password"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="•••••••••"
+            required
+          />
+        </form>
       </div>
 
       <div class="flex justify-center">
@@ -109,22 +111,23 @@ import { signUp } from "@/api/userApi";
 import { useRouter } from "vue-router";
 
 interface User {
-  name: string;
-  userID: string;
+  // name: string;
+  username: string;
   email: string;
   password: string;
 }
 
 const router = useRouter();
 
-const name = ref("");
+// const name = ref("");
 const userID = ref("");
 const email = ref("");
 const firstPW = ref("");
 const secondPW = ref("");
 
 const sendUserInfo = async () => {
-  if (name.value === "" || userID.value === "" || email.value === "") {
+  // if (name.value === "" || userID.value === "" || email.value === "") {
+  if (userID.value === "" || email.value === "") {
     alert("모든 필드를 채워야 합니다.");
     return;
   }
@@ -134,15 +137,15 @@ const sendUserInfo = async () => {
   }
 
   const user: User = {
-    name: name.value,
-    userID: userID.value,
+    // name: name.value,
+    username: userID.value,
     email: email.value,
     password: firstPW.value,
   };
 
-  const success = await signUp(user);
+  const response = await signUp(user);
 
-  if (success) {
+  if (response !== undefined) {
     router.push("/");
   } else {
     alert("이미 존재하는 아이디입니다.");

@@ -1,22 +1,18 @@
 package todoList.backend.controller;
 
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import todoList.backend.data.dto.SignInDto;
-import todoList.backend.data.dto.SignInResultDto;
-import todoList.backend.data.dto.SignUpDto;
-import todoList.backend.data.dto.SignUpResultDto;
+import todoList.backend.data.dto.*;
 import todoList.backend.service.UserService;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Api(tags = {"1. User"})
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
     private final UserService userService;
@@ -26,62 +22,19 @@ public class UserController {
         this.userService = userService;
     }
 
-//    @PostMapping(value = "/sign-in")
-//    public SignInResultDto signIn(
-//            @ApiParam(value = "ID", required = true) @RequestParam String id,
-//            @ApiParam(value = "Password", required = true) @RequestParam String password)
-//        throws RuntimeException {
-//        SignInResultDto signInResultDto = userService.signIn(id, password);
-//
-//        return signInResultDto;
-//    }
+    @ApiOperation(value = "로그인")
     @PostMapping(value = "/sign-in")
-    public Boolean signIn(@RequestBody SignInDto signInDto) {
-        SignInResultDto signInResultDto = userService.signIn(signInDto.getUserID(), signInDto.getPassword());
-
-        return signInResultDto.isSuccess();
+    public ResponseDto<UserTokenDto> signIn(@RequestBody SignInDto signInDto) {
+        UserTokenDto userTokenDto = userService.signIn(signInDto);
+        return new ResponseDto<>(userTokenDto);
     }
 
-//    @PostMapping(value = "/sign-up")
-//    public SignUpResultDto signUp(
-//            @ApiParam(value = "ID", required = true) @RequestParam String id,
-//            @ApiParam(value = "비밀번호", required = true) @RequestParam String password,
-//            @ApiParam(value = "이름", required = true) @RequestParam String name,
-//            @ApiParam(value = "이메일", required = true) @RequestParam String email,
-//            @ApiParam(value = "권한", required = true) @RequestParam String role) {
-//        SignUpResultDto signUpResultDto = userService.signUp(id, password, name, email, role);
-//
-//        return signUpResultDto;
-//    }
-
+    @ApiOperation(value = "회원가입")
     @PostMapping(value = "/sign-up")
-    public Boolean signUp(@RequestBody SignUpDto signUpDto) {
-        SignUpResultDto signUpResultDto = userService.signUp(
-                signUpDto.getUserID(),
-                signUpDto.getPassword(),
-                signUpDto.getName(),
-                signUpDto.getEmail(),
-                "user"
-        );
+    public ResponseEntity<ResponseDto<String>> signUp(@RequestBody SignUpDto signUpDto) {
+        userService.signUp(signUpDto);
 
-        return signUpResultDto.isSuccess();
-    }
-
-    @GetMapping(value = "/exception")
-    public void exceptionTest() throws RuntimeException {
-        throw new RuntimeException("접근이 금지되었습니다.");
-    }
-
-    @ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<Map<String, String>> ExceptionHandler(RuntimeException e) {
-        HttpHeaders responseHeaders = new HttpHeaders();
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        Map<String, String> map = new HashMap<>();
-        map.put("error type", httpStatus.getReasonPhrase());
-        map.put("code", "400");
-        map.put("message", "에러 발생");
-
-        return new ResponseEntity<>(map, responseHeaders, httpStatus);
+        ResponseDto<String> responseDto = new ResponseDto<>("회원가입이 완료되었습니다.");
+        return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 }

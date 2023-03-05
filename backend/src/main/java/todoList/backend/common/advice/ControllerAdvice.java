@@ -7,24 +7,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import todoList.backend.common.exception.BadRequestException;
 import todoList.backend.common.exception.NotFoundException;
-import todoList.backend.data.dto.ErrorResponseDto;
+import todoList.backend.data.dto.ResponseDto;
 
 @RestControllerAdvice
 public class ControllerAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({NotFoundException.class})
-    public ResponseEntity<ErrorResponseDto> handleNotFoundException(NotFoundException e) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto();
-        errorResponseDto.setMsg(e.getMessage());
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.NOT_FOUND);
+    public ResponseEntity<ResponseDto> handleNotFoundException(NotFoundException e) {
+        ResponseDto responseDto = new ResponseDto(e.getMessage());
+        return new ResponseEntity<>(responseDto, HttpStatus.NOT_FOUND);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({BadRequestException.class})
-    public ResponseEntity<ErrorResponseDto> handleBadRequestException(BadRequestException e) {
-        ErrorResponseDto errorResponseDto = new ErrorResponseDto();
-        errorResponseDto.setMsg(e.getMessage());
-        return new ResponseEntity<>(errorResponseDto, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ResponseDto> handleBadRequestException(BadRequestException e) {
+        ResponseDto responseDto = new ResponseDto(e.getMessage());
+        return new ResponseEntity<>(responseDto, HttpStatus.BAD_REQUEST);
     }
 }
